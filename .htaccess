@@ -1,0 +1,73 @@
+# Habilitar mod_rewrite
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # NO FORZAR HTTPS - Permitir tanto HTTP como HTTPS
+    # Solo descomentar la siguiente sección cuando tengas certificado SSL configurado y funcionando:
+
+    # Forzar HTTPS (SOLO si tienes SSL configurado)
+    # RewriteCond %{HTTPS} off
+    # RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Si necesitas forzar HTTPS solo en producción, usa esta versión:
+    # RewriteCond %{HTTPS} off
+    # RewriteCond %{HTTP_HOST} ^cotizacion\.jhanstudios\.com$ [NC]
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Prevenir acceso directo a archivos sensibles
+    # Bloquear acceso a includes pero permitir api
+    RewriteRule ^includes/.*$ - [F,L]
+
+    # Prevenir acceso a archivos sensibles por extensión
+    <FilesMatch "\.(env|log|sql|md|bak|backup)$">
+        Order Allow,Deny
+        Deny from all
+    </FilesMatch>
+
+</IfModule>
+
+# Configuración de seguridad
+
+<IfModule mod_headers.c>
+    # Prevenir clickjacking
+    Header always set X-Frame-Options "SAMEORIGIN"
+
+    # Prevenir MIME type sniffing
+    Header always set X-Content-Type-Options "nosniff"
+
+    # Protección XSS
+    Header always set X-XSS-Protection "1; mode=block"
+
+</IfModule>
+
+# Comprimir archivos
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+</IfModule>
+
+# Cache para recursos estáticos
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType application/pdf "access plus 1 month"
+</IfModule>
+
+# Prevenir listado de directorios
+
+Options -Indexes
+
+# Páginas de error personalizadas (opcional)
+
+# ErrorDocument 404 /404.php
+
+# ErrorDocument 500 /500.php

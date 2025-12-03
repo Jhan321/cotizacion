@@ -1,0 +1,7 @@
+# Permitir acceso a archivos en uploads
+Options -Indexes
+<FilesMatch "\.(png|jpg|jpeg|gif|svg)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
+
