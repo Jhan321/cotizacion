@@ -1,9 +1,9 @@
 <?php
 // Configuración de la base de datos
 define('DB_HOST', 'localhost');
-define('DB_USER', 'root'); //u891516864_sistema_cotiza
-define('DB_PASS', ''); //2Kw=g6JyI@
-define('DB_NAME', 'sistema_cotizaciones'); //u891516864_sistema_cotiza
+define('DB_USER', 'root'); 
+define('DB_PASS', '');
+define('DB_NAME', 'sistema_cotizaciones');
 
 // Configuración de la aplicación
 // Detectar automáticamente el protocolo (HTTP/HTTPS)
